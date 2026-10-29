@@ -1,0 +1,24 @@
+{
+  "id": "vaswani-2017-attention-is-all-you-need",
+  "title": "Attention Is All You Need",
+  "authors": "Ashish Vaswani et al.",
+  "venue": "NeurIPS 2017",
+  "year": 2017,
+  "url": "https://arxiv.org/abs/1706.03762",
+  "passages": [
+    {
+      "id": "scaled-dot-product-attention",
+      "section": "3.2.1 Scaled Dot-Product Attention",
+      "page": 3,
+      "url": "https://arxiv.org/pdf/1706.03762#page=3",
+      "curator_note": "The paper scales query-key dot products by the square root of the key dimension, then applies softmax to weight value vectors."
+    },
+    {
+      "id": "positional-encoding",
+      "section": "3.5 Positional Encoding",
+      "page": 5,
+      "url": "https://arxiv.org/pdf/1706.03762#page=5",
+      "curator_note": "The paper adds positional encodings to token embeddings so the model can use sequence order."
+    }
+  ]
+}

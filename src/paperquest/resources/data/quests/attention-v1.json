@@ -1,0 +1,35 @@
+{
+  "id": "attention-is-all-you-need-positional-signal-v1",
+  "version": "1.0.0",
+  "paper_id": "vaswani-2017-attention-is-all-you-need",
+  "title": "Attention Is All You Need",
+  "audience": "ML and GenAI developers learning attention",
+  "objective": "Inspect how a positional signal changes one query token's attention scores, weights, and output.",
+  "question": "How does changing position affect the tokens this query attends to?",
+  "claim": "Scaled dot-product attention computes compatibility scores, normalizes them with softmax, and uses the weights to combine value vectors.",
+  "evidence_ids": ["scaled-dot-product-attention", "positional-encoding"],
+  "experiment_id": "fixed-toy-scaled-dot-product-attention-v1",
+  "inputs": {
+    "tokens": ["The", "animal", "didn't", "cross", "it", "because", "was tired"],
+    "default_query_token": 4,
+    "default_position_strength": 0.72,
+    "baseline_position_strength": 0.0,
+    "position_strength_min": 0.0,
+    "position_strength_max": 1.0
+  },
+  "quiz": {
+    "question": "What is the purpose of adding positional information to token representations?",
+    "options": [
+      {"id": "a", "text": "To provide information about token order"},
+      {"id": "b", "text": "To increase the number of attention heads"},
+      {"id": "c", "text": "To replace the softmax calculation"}
+    ],
+    "correct_option_id": "a",
+    "explanation": "The paper adds positional encodings so the model can make use of sequence order."
+  },
+  "limitations": [
+    "Vectors are fixed teaching inputs, not learned embeddings.",
+    "This simplified experiment applies a positional signal directly to query and key vectors; it is not the full Transformer implementation.",
+    "The experiment illustrates the attention equation; it does not reproduce the trained model or paper benchmark results."
+  ]
+}

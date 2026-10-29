@@ -55,15 +55,18 @@
               <div class="heatmap-wrap"><div class="y-label">WEIGHT</div><div class="heatmap" id="heatmap" role="img" aria-label="Attention weight assigned to each token"></div></div>
               <div class="controls">
                 <div class="position-control"><div class="control-label"><span>POSITION SIGNAL</span><strong id="positionState">72%</strong></div><input id="positionSlider" type="range" min="0" max="100" value="72" aria-label="Position signal strength" /><div class="range-labels"><span>OFF</span><span>STRONG</span></div></div>
-                <button id="runButton" class="run-button" type="button"><span>▶</span> Run experiment</button>
+                <div class="action-buttons"><button id="runButton" class="run-button" type="button"><span>▶</span> Run experiment</button><button id="compareButton" class="compare-button" type="button">Compare with signal off</button></div>
               </div>
               <div class="result-line" id="resultLine" aria-live="polite"><span class="result-pulse"></span><span id="resultText">Loading the curated quest…</span><span class="result-hint">FASTAPI · DETERMINISTIC</span></div>
+              <section class="comparison-panel" id="comparisonPanel" hidden aria-live="polite"><div class="comparison-heading"><div><span class="step-label">CONTROLLED COMPARISON</span><h4>Position signal: off vs. on</h4></div><p id="comparisonNote"></p></div><div class="comparison-grid" id="comparisonGrid"></div></section>
               <details class="math-details"><summary>Inspect the math</summary><p><code>Attention(Q,K,V) = softmax(QKᵀ / √dₖ)V</code></p><div class="math-grid"><div><b>Scaled scores</b><pre id="scoresOutput">Run the experiment.</pre></div><div><b>Weighted value output</b><pre id="outputVector">Run the experiment.</pre></div></div></details>
             </div>
           </div>
         </section>
 
         <section class="insight-strip" id="evidence"><div class="insight-icon">↗</div><div><span class="eyebrow muted">PAPER EVIDENCE</span><p id="questClaim">Loading the evidence-backed quest…</p><div id="evidenceLinks" class="evidence-links"></div></div></section>
+
+        <section class="quiz-section" id="quiz" aria-labelledby="quizTitle"><div><span class="eyebrow muted">CHECK YOUR UNDERSTANDING</span><h2 id="quizTitle">Can you explain the idea?</h2><p id="quizQuestion">Loading the question…</p></div><form id="quizForm" class="quiz-options"></form><p id="quizFeedback" class="quiz-feedback" aria-live="polite"></p></section>
 
         <section class="coming-next" id="about"><div><span class="eyebrow muted">WHAT THIS DEMO DOES — AND DOESN’T</span><h2>Understand one idea.<br /><em>Keep the claims honest.</em></h2></div><div class="next-note"><span class="next-number">LIMITATION</span><p id="limitations">These are fixed teaching vectors, not learned model embeddings. This experiment illustrates the equation; it does not reproduce the trained Transformer or the paper’s reported results.</p><span class="next-arrow">↗</span></div></section>
       </main>

@@ -1,0 +1,11 @@
+{
+  "suite": "deterministic-attention-invariants",
+  "generated_at_utc": "2026-10-29T05:54:49.583949+00:00",
+  "cases": 35,
+  "checks_per_case": 5,
+  "checks_passed": 175,
+  "checks_total": 175,
+  "pass_rate": 1.0,
+  "failures": [],
+  "scope_note": "Checks numeric invariants and repeatability of fixed teaching vectors only. They do not measure semantic correctness, paper fidelity, or trained-model quality."
+}

@@ -35,6 +35,7 @@ async function loadQuest() {
   });
   questClaim.textContent = quest.claim;
   const links = document.querySelector('#evidenceLinks');
+  links.replaceChildren();
   for (const item of quest.evidence) {
     const link = document.createElement('a');
     link.href = item.url;
@@ -44,6 +45,27 @@ async function loadQuest() {
     links.append(link);
   }
   document.querySelector('#limitations').textContent = quest.limitations.join(' ');
+  document.querySelector('#quizQuestion').textContent = quest.quiz.question;
+  const quizOptions = document.querySelector('#quizForm');
+  quizOptions.replaceChildren();
+  quest.quiz.options.forEach((option) => {
+    const label = document.createElement('label');
+    label.className = 'quiz-option';
+    const input = document.createElement('input');
+    input.type = 'radio';
+    input.name = 'answer';
+    input.value = option.id;
+    input.required = true;
+    const text = document.createElement('span');
+    text.textContent = option.text;
+    label.append(input, text);
+    quizOptions.append(label);
+  });
+  const submit = document.createElement('button');
+  submit.type = 'submit';
+  submit.className = 'quiz-submit';
+  submit.textContent = 'Check answer';
+  quizOptions.append(submit);
   await runExperiment();
 }
 
@@ -89,14 +111,81 @@ async function runExperiment() {
   }
 }
 
+async function compareExperiment() {
+  const button = document.querySelector('#compareButton');
+  const panel = document.querySelector('#comparisonPanel');
+  button.disabled = true;
+  button.textContent = 'Comparing…';
+  try {
+    const response = await fetch('/api/v1/experiment/compare', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ query_token: selectedToken, position_strength: Number(slider.value) / 100 }),
+    });
+    if (!response.ok) throw new Error('Comparison failed. Please try again.');
+    const result = await response.json();
+    const grid = document.querySelector('#comparisonGrid');
+    grid.replaceChildren();
+    [result.baseline, result.current].forEach((run, runIndex) => {
+      const card = document.createElement('article');
+      card.className = 'comparison-card';
+      const title = document.createElement('h5');
+      title.textContent = runIndex === 0 ? result.baseline_label : result.current_label;
+      card.append(title);
+      run.tokens.forEach((token, index) => {
+        const row = document.createElement('div');
+        row.className = 'comparison-row';
+        const name = document.createElement('span');
+        name.textContent = token;
+        const value = document.createElement('strong');
+        value.textContent = `${(run.weights[index] * 100).toFixed(1)}%`;
+        row.append(name, value);
+        card.append(row);
+      });
+      grid.append(card);
+    });
+    document.querySelector('#comparisonNote').textContent = result.interpretation;
+    panel.hidden = false;
+  } catch (error) {
+    document.querySelector('#comparisonNote').textContent = error.message || 'Comparison failed.';
+    panel.hidden = false;
+  } finally {
+    button.disabled = false;
+    button.textContent = 'Compare with signal off';
+  }
+}
+
+async function submitQuiz(event) {
+  event.preventDefault();
+  const selected = new FormData(event.currentTarget).get('answer');
+  if (!selected) return;
+  const response = await fetch('/api/v1/quiz/answer', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ option_id: selected }),
+  });
+  const feedback = document.querySelector('#quizFeedback');
+  if (!response.ok) {
+    feedback.textContent = 'Could not check the answer. Please try again.';
+    return;
+  }
+  const result = await response.json();
+  feedback.textContent = `${result.feedback} ${result.explanation}`;
+  feedback.classList.toggle('correct', result.correct);
+  feedback.classList.toggle('incorrect', !result.correct);
+}
+
 slider.addEventListener('input', () => {
   document.querySelector('#positionState').textContent = slider.value === '0' ? 'OFF' : `${slider.value}%`;
   slider.style.background = `linear-gradient(90deg, var(--lime) ${slider.value}%, #384032 ${slider.value}%)`;
 });
 document.querySelector('#runButton').addEventListener('click', runExperiment);
+document.querySelector('#compareButton').addEventListener('click', compareExperiment);
+document.querySelector('#quizForm').addEventListener('submit', submitQuiz);
 document.querySelector('#resetButton').addEventListener('click', async () => {
   selectedToken = quest.defaults.query_token;
   slider.value = String(Math.round(quest.defaults.position_strength * 100));
+  document.querySelector('#comparisonPanel').hidden = true;
   for (const item of tokensRoot.querySelectorAll('.token')) {
     const active = Number(item.dataset.index) === selectedToken;
     item.classList.toggle('selected', active);

@@ -1,9 +1,16 @@
 .venv/
 __pycache__/
 .pytest_cache/
+.ruff_cache/
 *.py[cod]
 .env
+.env.*
+!.env.example
 .coverage
 dist/
 build/
 *.egg-info/
+artifacts/
+*.sqlite
+*.sqlite3
+node_modules/

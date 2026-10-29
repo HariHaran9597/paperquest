@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#10120f" />
+    <meta name="description" content="Learn scaled dot-product attention by changing inputs and running a real, inspectable experiment." />
+    <title>PaperQuest — run the idea</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" href="/overrides.css" />
+    <script src="/app.js" defer></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="#top" aria-label="PaperQuest home"><span class="brand-mark">P<span>Q</span></span><span>paper<span class="brand-light">quest</span></span></a>
+        <nav class="top-nav" aria-label="Main navigation"><a class="active" href="#experiment">The quest</a><a href="#evidence">Paper evidence</a><a href="#about">About</a></nav>
+        <div class="streak"><span class="spark">✳</span> <span>No login · no API key · no GPU</span></div>
+      </header>
+
+      <main id="top">
+        <section class="intro">
+          <div class="intro-copy"><div class="eyebrow"><span class="live-dot"></span> ONE PAPER · ONE RUNNABLE IDEA</div>
+            <h1>Don’t just read<br />the paper. <em>Run it.</em></h1>
+            <p>Turn a research claim into an experiment you can change, inspect, and explain. Start with the attention mechanism behind the Transformer.</p>
+            <div class="intro-meta"><span>01 CURATED PAPER</span><i></i><span>DETERMINISTIC RUN</span><i></i><span>NO GPU</span></div>
+          </div>
+          <article class="paper-card">
+            <div class="paper-topline"><span class="paper-tag">THE ORIGINAL TRANSFORMER</span><span class="paper-year">2017</span></div>
+            <div class="paper-art" aria-hidden="true"><div class="art-grid"></div><div class="art-orbit orbit-one"></div><div class="art-orbit orbit-two"></div><div class="art-core">Attention<br /><b>→</b></div><span class="art-node node-a">Q</span><span class="art-node node-b">K</span><span class="art-node node-c">V</span></div>
+            <div class="paper-info"><h2>Attention Is All You Need</h2><p>Vaswani et al. · NeurIPS 2017</p><div class="paper-bottom"><span><b>~5 min</b> experiment</span><a href="https://arxiv.org/abs/1706.03762" target="_blank" rel="noopener noreferrer">Read the paper <span>↗</span></a></div></div>
+          </article>
+        </section>
+
+        <section class="lab-section" id="experiment" aria-labelledby="challenge-title">
+          <div class="section-heading"><div><div class="eyebrow muted">YOUR FIRST QUEST <span class="quest-count">01 / 01</span></div><h2 id="challenge-title">Where does attention go?</h2></div><div class="difficulty"><span class="difficulty-dot"></span> BEGINNER <span class="difficulty-divider">·</span> HANDS-ON</div></div>
+          <div class="quest-grid">
+            <aside class="mission-card">
+              <div class="mission-label"><span class="mission-icon">✳</span> THE QUESTION</div>
+              <p class="mission-question">How does a position signal change one token’s attention?</p>
+              <p class="mission-body">Choose a query token, adjust the positional signal, then run attention. Inspect the raw scores, softmax weights, and weighted value output.</p>
+              <div class="mission-divider"></div>
+              <div class="paper-claim"><span class="claim-mark">“</span><div><span class="claim-label">PAPER IDEA</span><p>Attention uses query–key compatibility to weight value vectors; positional encodings provide information about token order.</p></div></div>
+              <div class="mission-footer"><span class="tiny-check">✓</span> FIXED INPUTS · REPEATABLE OUTPUT</div>
+            </aside>
+
+            <div class="experiment-card">
+              <div class="experiment-head"><div><span class="step-label">EXPERIMENT 01</span><h3>Run scaled dot-product attention</h3></div><button class="reset-button" id="resetButton" type="button">↺ <span>Reset</span></button></div>
+              <div class="sentence-label">INPUT SEQUENCE <span>7 TOKENS · FIXED TEACHING VECTORS</span></div>
+              <div class="tokens" id="tokens" aria-label="Choose a query token"></div>
+              <div class="matrix-title"><span>ATTENTION FROM <b id="focusToken">“it”</b></span><span class="matrix-key"><i></i> larger weight</span></div>
+              <div class="heatmap-wrap"><div class="y-label">WEIGHT</div><div class="heatmap" id="heatmap" role="img" aria-label="Attention weight assigned to each token"></div></div>
+              <div class="controls">
+                <div class="position-control"><div class="control-label"><span>POSITION SIGNAL</span><strong id="positionState">72%</strong></div><input id="positionSlider" type="range" min="0" max="100" value="72" aria-label="Position signal strength" /><div class="range-labels"><span>OFF</span><span>STRONG</span></div></div>
+                <button id="runButton" class="run-button" type="button"><span>▶</span> Run experiment</button>
+              </div>
+              <div class="result-line" id="resultLine" aria-live="polite"><span class="result-pulse"></span><span id="resultText">Loading the curated quest…</span><span class="result-hint">FASTAPI · DETERMINISTIC</span></div>
+              <details class="math-details"><summary>Inspect the math</summary><p><code>Attention(Q,K,V) = softmax(QKᵀ / √dₖ)V</code></p><div class="math-grid"><div><b>Scaled scores</b><pre id="scoresOutput">Run the experiment.</pre></div><div><b>Weighted value output</b><pre id="outputVector">Run the experiment.</pre></div></div></details>
+            </div>
+          </div>
+        </section>
+
+        <section class="insight-strip" id="evidence"><div class="insight-icon">↗</div><div><span class="eyebrow muted">PAPER EVIDENCE</span><p id="questClaim">Loading the evidence-backed quest…</p><div id="evidenceLinks" class="evidence-links"></div></div></section>
+
+        <section class="coming-next" id="about"><div><span class="eyebrow muted">WHAT THIS DEMO DOES — AND DOESN’T</span><h2>Understand one idea.<br /><em>Keep the claims honest.</em></h2></div><div class="next-note"><span class="next-number">LIMITATION</span><p id="limitations">These are fixed teaching vectors, not learned model embeddings. This experiment illustrates the equation; it does not reproduce the trained Transformer or the paper’s reported results.</p><span class="next-arrow">↗</span></div></section>
+      </main>
+      <footer><a class="brand footer-brand" href="#top"><span class="brand-mark">P<span>Q</span></span><span>paper<span class="brand-light">quest</span></span></a><span>One sourced idea. One experiment you can inspect.</span><span>OPEN PAPER · RUN QUEST <b>✳</b></span></footer>
+    </div>
+  </body>
+</html>
+
